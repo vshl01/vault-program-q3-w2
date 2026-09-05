@@ -1,0 +1,4 @@
+[alias]
+format = ["fmt", "--all"]
+format-check = ["fmt", "--all", "--", "--check"]
+lint = ["clippy", "--all-targets", "--", "-D", "warnings"]

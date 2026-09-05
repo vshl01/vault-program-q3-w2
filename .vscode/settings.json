@@ -1,0 +1,17 @@
+{
+  "files.autoSave": "off",
+
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true
+  },
+
+  "editor.inlayHints.enabled": "on",
+
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.completion.autoimport.enable": true,
+  "rust-analyzer.completion.callable.snippets": "fill_arguments",
+  "rust-analyzer.inlayHints.typeHints.enable": true,
+  "rust-analyzer.inlayHints.parameterHints.enable": true,
+  "rust-analyzer.inlayHints.chainingHints.enable": true
+}
