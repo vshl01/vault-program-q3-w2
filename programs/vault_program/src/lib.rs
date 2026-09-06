@@ -18,4 +18,16 @@ pub mod vault_program {
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         crate::instructions::initialize::handle_initialize(ctx)
     }
+
+    pub fn deposit(ctx: Context<Deposit>, amount: u64) -> Result<()> {
+        instructions::deposit::handle_deposit(ctx, amount)
+    }
+
+    pub fn withdraw(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
+        instructions::withdraw::handle_withdraw(ctx, amount)
+    }
+
+    pub fn close(ctx: Context<Close>) -> Result<()> {
+        instructions::close::handle_close(ctx)
+    }
 }
