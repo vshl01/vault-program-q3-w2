@@ -4,7 +4,8 @@
   "private": true,
   "license": "ISC",
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:rust": "./scripts/test-rust.sh"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.32.1",
