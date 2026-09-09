@@ -4,7 +4,7 @@ use anchor_spl::{
     token::{self, CloseAccount, Mint, Token, TokenAccount, Transfer},
 };
 
-use crate::{constants::*, state::Escrow};
+use crate::{constants::*, error::EscrowError, state::Escrow};
 
 #[derive(Accounts)]
 pub struct Refund<'info> {
@@ -43,6 +43,12 @@ pub struct Refund<'info> {
 }
 
 pub fn handle_refund(ctx: Context<Refund>) -> Result<()> {
+    // The offer is binding until it expires; only then may the maker pull out.
+    require!(
+        Clock::get()?.unix_timestamp > ctx.accounts.escrow.deadline,
+        EscrowError::NotExpired
+    );
+
     let maker = ctx.accounts.maker.key();
     let seed = ctx.accounts.escrow.seed.to_le_bytes();
     let signer_seeds: &[&[&[u8]]] = &[&[

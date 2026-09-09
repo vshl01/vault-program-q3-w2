@@ -4,7 +4,7 @@ use anchor_spl::{
     token::{self, CloseAccount, Mint, Token, TokenAccount, Transfer},
 };
 
-use crate::{constants::*, state::Escrow};
+use crate::{constants::*, error::EscrowError, state::Escrow};
 
 #[derive(Accounts)]
 pub struct Take<'info> {
@@ -65,7 +65,15 @@ pub struct Take<'info> {
     pub system_program: Program<'info, System>,
 }
 
-pub fn handle_take(ctx: Context<Take>) -> Result<()> {
+pub fn handle_take(ctx: Context<Take>, expected_receive: u64) -> Result<()> {
+    let escrow = &ctx.accounts.escrow;
+    require!(
+        Clock::get()?.unix_timestamp <= escrow.deadline,
+        EscrowError::Expired
+    );
+    // Guards against the maker repricing while this transaction is in flight.
+    require_eq!(escrow.receive, expected_receive, EscrowError::PriceChanged);
+
     // Taker pays the maker in mint_b.
     token::transfer(
         CpiContext::new(

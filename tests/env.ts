@@ -204,6 +204,7 @@ export class Env {
         authority: authority.publicKey,
         vault,
         vaultTokenAccount: this.ata(vault),
+        userTokenAccount: this.ata(authority.publicKey),
         tokenProgram: TOKEN_PROGRAM_ID,
       })
       .instruction();

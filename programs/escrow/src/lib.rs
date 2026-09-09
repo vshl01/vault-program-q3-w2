@@ -15,17 +15,23 @@ declare_id!("BrZuxiD85Ur3A42qNiTajtKru55BNir4Qo1gaRSGxwov");
 pub mod escrow {
     use super::*;
 
-    /// Maker locks `deposit` of mint_a and asks for `receive` of mint_b.
-    pub fn make(ctx: Context<Make>, seed: u64, deposit: u64, receive: u64) -> Result<()> {
-        instructions::make::handle_make(ctx, seed, deposit, receive)
+    /// Maker locks `deposit` of mint_a and asks for `receive` of mint_b until `deadline`.
+    pub fn make(
+        ctx: Context<Make>,
+        seed: u64,
+        deposit: u64,
+        receive: u64,
+        deadline: i64,
+    ) -> Result<()> {
+        instructions::make::handle_make(ctx, seed, deposit, receive, deadline)
     }
 
-    /// Taker pays `receive` of mint_b and claims the vault.
-    pub fn take(ctx: Context<Take>) -> Result<()> {
-        instructions::take::handle_take(ctx)
+    /// Taker pays `expected_receive` of mint_b and claims the vault. Before the deadline only.
+    pub fn take(ctx: Context<Take>, expected_receive: u64) -> Result<()> {
+        instructions::take::handle_take(ctx, expected_receive)
     }
 
-    /// Maker cancels and takes the deposit back.
+    /// Maker takes the deposit back. After the deadline only.
     pub fn refund(ctx: Context<Refund>) -> Result<()> {
         instructions::refund::handle_refund(ctx)
     }

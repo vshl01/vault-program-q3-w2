@@ -18,6 +18,10 @@ pub struct Update<'info> {
 /// Repricing only — the deposited amount in the vault is untouched.
 pub fn handle_update(ctx: Context<Update>, receive: u64) -> Result<()> {
     require!(receive > 0, EscrowError::InvalidAmount);
+    require!(
+        Clock::get()?.unix_timestamp <= ctx.accounts.escrow.deadline,
+        EscrowError::Expired
+    );
 
     ctx.accounts.escrow.receive = receive;
     Ok(())

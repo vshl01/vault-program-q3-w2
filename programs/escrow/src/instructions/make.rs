@@ -44,12 +44,22 @@ pub struct Make<'info> {
     pub system_program: Program<'info, System>,
 }
 
-pub fn handle_make(ctx: Context<Make>, seed: u64, deposit: u64, receive: u64) -> Result<()> {
+pub fn handle_make(
+    ctx: Context<Make>,
+    seed: u64,
+    deposit: u64,
+    receive: u64,
+    deadline: i64,
+) -> Result<()> {
     require!(deposit > 0 && receive > 0, EscrowError::InvalidAmount);
     require_keys_neq!(
         ctx.accounts.mint_a.key(),
         ctx.accounts.mint_b.key(),
         EscrowError::SameMint
+    );
+    require!(
+        deadline > Clock::get()?.unix_timestamp,
+        EscrowError::InvalidDeadline
     );
 
     ctx.accounts.escrow.set_inner(Escrow {
@@ -58,6 +68,7 @@ pub fn handle_make(ctx: Context<Make>, seed: u64, deposit: u64, receive: u64) ->
         mint_a: ctx.accounts.mint_a.key(),
         mint_b: ctx.accounts.mint_b.key(),
         receive,
+        deadline,
         bump: ctx.bumps.escrow,
     });
 

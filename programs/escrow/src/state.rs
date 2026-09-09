@@ -12,5 +12,7 @@ pub struct Escrow {
     pub mint_b: Pubkey,
     /// Amount of `mint_b` the taker must pay.
     pub receive: u64,
+    /// Unix seconds. Takeable up to here, refundable only after.
+    pub deadline: i64,
     pub bump: u8,
 }
