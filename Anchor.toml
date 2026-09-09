@@ -7,6 +7,8 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
+escrow = "BrZuxiD85Ur3A42qNiTajtKru55BNir4Qo1gaRSGxwov"
+nc_vault = "GpvQhAe56FKFs9suG7PQ2bnxghikcwdWn7NbDVpN44Yt"
 vault_program = "2vfnmCqDAS99CnSrfRKuRTjSim2BP3fVXcG7L6AA41WC"
 
 [provider]

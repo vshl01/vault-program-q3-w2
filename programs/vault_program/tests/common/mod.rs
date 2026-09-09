@@ -193,6 +193,7 @@ impl Env {
                 authority: authority.pubkey(),
                 vault: *vault,
                 vault_token_account: get_associated_token_address(vault, &self.mint),
+                user_token_account: self.ata(&authority.pubkey()),
                 token_program: spl_token::ID,
             }
             .to_account_metas(None),
